@@ -1,0 +1,164 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'partials/topnav.html' %} <!-- Ce tag nous permet d'inclure les pages componennt qui sont ds le dossier 'partials'-->
+<div class="row my-4">
+    
+    <div class="col-md-12">
+
+        <div class="col-md-2">
+            <div class="">
+            </div>
+            <div class="mt-2 mb-1">
+                <a class="nav-link text-white btn btn-success" data-toggle="modal" data-target="#addModal" href="">Ajout Matériel <i class="fas fa-plus"></i></a>
+            </div>
+        </div>
+
+        <!-- AddModal -->
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-success">
+                <h5 class="modal-title" id="addModalLabel"><i class="fas fa-plus "></i>&nbsp;&nbsp;Ajout Matériel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                    <form method="POST" class="p-5">
+                        {% csrf_token%}
+                        {{form|crispy}}
+                        <input type="submit" class="btn btn-success" value="Ajouter">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--End Modal-->
+
+        <table class="table bg-white" >
+            <thead class=" text-white" style="background-color: rgb(37, 75, 140);font-size:14px ;">
+                <tr>
+                    <th>ID</th>
+                    <th>Identifiant</th>
+                    <th>Marque & Modèle</th>
+                    <th>Categorie</th>
+                    <th>N°Serie</th>
+                    <th>Etat</th>
+                    <th>Affecté à</th>
+                    <th>Service</th>
+                    <th>Date d'ajout</th>
+                    <th>Modifié le</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:13px ;">
+                {% for instance in queryset %}
+                <tr>
+                    <td>{{instance.id}}</td>
+                    <td>{{instance.identifiant}}</td>
+                    <td>{{instance.marque_modele}}</td>
+                    <td>{{instance.categorie}}</td>
+                    <td>{{instance.noSerie}}</td>
+                    <td>{{instance.etat}}</td>
+                    <td>{{instance.affecte_a}}</td>
+                    <td>{{instance.departement}}</td>
+                    <td>{{instance.created_at}}</td>
+                    <td>{{instance.updated_at}}</td>
+                    <td>
+                        <a class="btn btn-info btn-sm"
+                            href="{% url 'dashboard-updatedata' instance.id %}"> <i class="fas fa-pencil-alt" data-toggle="modal" data-target=""></i></a>
+                        <a class="btn btn-danger btn-sm ml-1"
+                            href="#"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#deleteModal"></i></a>
+                    </td>
+                </tr>
+
+                <!-- UpdateModal -->
+        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;Modifier Matériel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                    <form method="POST" class="p-5">
+                        {% csrf_token%}
+                        {{update_form|crispy}}
+                        <input type="submit" class="btn btn-success" value="Mettre à jour">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--End Modal-->
+
+                <!-- #1.DELETE  -->                                			                                     
+						<!-- Button trigger modal -->
+						<!-- Modal -->
+						<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="deleteModalLabel"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp;Suppression</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								
+								</button>
+								</div>
+								<div class="modal-body text-center">
+										<span class="text-danger"><i class="fas fa-trash-alt fa-3x mt-2"></i></span>
+										<div style="height:50px;" class="mt-2"><b>Etes-vous sûr de vouloir supprimer {{instance.identifiant}} ?</b></div>
+								</div>
+								<div class="modal-footer">
+								
+								<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Annuler</button>
+								<a  href="{% url 'deleteitem' instance.id %}" type="button" class="btn btn-outline-danger btn-sm">Confirmer</a>
+								
+								</div>
+							</div>
+							</div>
+							
+						</div>
+						<!-- #ENDDELETE  --> 
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- PAGINATION-->
+        <div class="clearfix">
+						
+            <!--		{{ queryset}} <br>
+                        Has Previous: {{queryset.has_previous }} <br>
+                        Has Next: {{queryset.has_next }} <br>
+                        Current Page: {{queryset.number}} <br>
+                        Number of pages; {{queysets.paginator.num_page}}
+            -->
+            
+        
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if queryset.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">&laquo;Premier</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{queryset.previous_page_number}} "> Precedent </a></li>
+                        {% endif %}
+
+                        <!-- Afficher les pages par rapport à leur nombre "On affiche le vrai nombre des pages en les rendant cliquable""-->
+                                                
+                        {% for i in nums %}
+                        <li class="page-item"><a href="?page={{forloop.counter}}" class="page-link">{{forloop.counter}}</a></li>
+                        {% endfor %}
+                            
+                        <!--li class="page-item disabled"><a href="#" class="page-link"> Page {{queryset.number}} sur {{queryset.paginator.num_pages}}</a></!--li-->
+
+                        {% if queryset.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{queryset.next_page_number}}">suivant</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{queryset.paginator.num_pages}}"> Dernier&raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            
+        </div>
+    <!--END PAGINATION-->
+
+    </div>
+</div>
+{% endblock %}

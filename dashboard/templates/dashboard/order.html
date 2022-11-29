@@ -1,0 +1,32 @@
+{% extends 'partials/base.html' %}
+
+
+{% block content %}
+{% include 'partials/topnav.html' %} <!-- Ce tag nous permet d'inclure les pages componennt qui sont ds le dossier 'partials'-->
+<div class="row my-4">
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+        <table class="table bg-white">
+            <thead class="bg-info text-white">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Odered by</th>
+                </tr>
+            </thead>
+            <tbody>
+               {% for orders in orders %}
+                <tr>
+                    <td>{{orders.product}}</td>
+                    <td>{{orders.product.categorie}}</td>
+                    <td>{{orders.order_quantity}}</td>
+                    <td>Test</td>
+                </tr>
+                {% endfor %}            
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

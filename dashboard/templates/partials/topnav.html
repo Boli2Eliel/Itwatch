@@ -1,0 +1,57 @@
+<!--Top side-->
+<div class="row">
+    <div class="col-md-4 mt-4">
+        <div class="card">
+            <div class="card-header text-white" style="background-color: rgb(237, 28, 36);"><i class="fas fa-info fa-2x "></i> 
+                Information 
+            </div>
+            <div class="card-body">
+                <marquee behavior="" direction="">
+                    <h3 class="my-4">New Information</h3>
+                </marquee>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 mt-4">
+        <div class="card">
+            <div class="card-header text-white" style="background-color: rgb(37, 75, 140);"><i class="fas fa-tachometer-alt fa-2x "></i>
+                Tableau de bord/Statistiques
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a class="text-decoration-none text-dark" href="{% url 'dashboard-staff' %}">
+                            <div class="card my-card shadow">
+                                <div class="card-body text-center">
+                                    <h4>Staff <i class="fas fa-users"></i></h4>
+                                    <h3></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="text-decoration-none text-dark" href="{% url 'dashboard-product' %}">
+                            <div class="card my-card shadow">
+                                <div class="card-body text-center">
+                                    <h4>Matériel IT <i class="fas fa-box"></i></h4>
+                                    <h3></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="text-decoration-none text-dark" href="{% url 'dashboard-order' %}">
+                            <div class="card my-card shadow">
+                                <div class="card-body text-center">
+                                    <h4>Commandes <i class="fas fa-shipping-fast"></i></h4>
+                                    <h3></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End-Top side-->

@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-5 ">
+            <div class="col-md-6 offset-md-3 ">
+                <div class="border p-3 bg-white">
+                    <h3>Page d'enregistrement</h3>
+                    <form action="" method="POST"> {% csrf_token %}
+                        {{ form | crispy}}
+                        <input class="form-control btn-outline-success" type="submit" value="Enregistrer">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

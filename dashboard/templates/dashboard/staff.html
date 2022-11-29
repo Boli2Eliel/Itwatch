@@ -1,0 +1,41 @@
+{% extends 'partials/base.html' %}
+
+{% block content%} 
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+{% include 'partials/topnav.html' %} <!-- Ce tag nous permet d'inclure les pages componennt qui sont ds le dossier 'partials'-->
+<!-- Table-->
+<div class="container">
+    <div class="row my-4">
+        <div class="col-md-4"></div>
+        <div class="col-md-8">
+            <table class="table bg-white">
+                <thead class="text-white " style="background-color: rgb(37, 75, 140);">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Noms</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for worker in workers %}
+                    <tr>
+                        <th scope="row"><a class="btn btn-info btn-sm"
+                                href="{% url 'dashboard-staff-detail' worker.id %}">View</a></th>
+                        <td>{{worker.first_name}}</td>
+                        <td>{{worker.last_name}}</td>
+                        <td>{{worker.email}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- End-Table-->
+{% else %}
+<h4> Staff member only</h4>
+{% endif %}
+
+
+{% endblock content%}

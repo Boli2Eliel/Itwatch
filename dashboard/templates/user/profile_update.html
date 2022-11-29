@@ -1,0 +1,35 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <!--Profilr-->
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-white font-weight-bold fs-5 " style="background-color: rgb(37, 75, 140);">
+                        Profil-"{{user.username}}"
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="h4"> Profile Information</span> 
+                                <hr>
+                                <form  method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                                    {{user_form|crispy}}
+                                    {{profile_form | crispy}}
+                                    <input type="submit" class="btn btn-success" value="Modifier">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--EndProfile-->
+
+{% endblock %}
