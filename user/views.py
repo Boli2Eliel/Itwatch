@@ -9,11 +9,13 @@ from django.contrib import messages
 # Create your views here.
 
 #=======REGISTER FUNCTION=========
+@login_required()
 def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Nouvel utilisateur enregistré avec succès!")
             return redirect('dashboard-index')
     else:
         form = CreateUserForm()
@@ -38,10 +40,11 @@ def logon(request):
 
 #========PROFIL & PROFILE UPDATE=========
 
-@login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
+@login_required()  # on met ce "decorators" partout où l'on veut que le user soit connecté avant d'y acceder
 def profile(request):
     return render(request, 'user/profile.html')
 
+@login_required() #"LOGIN_URL = 'user-login'" # for decorators a été ajouté dans le settings
 def profile_update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)

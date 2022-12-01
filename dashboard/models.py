@@ -12,6 +12,8 @@ CATEGORIE =(
     ('Ecran', 'Ecran'),
     ('Nas', 'Nas'),
     ('Téléphonie', 'Téléphonie'),
+    ('Accessoires', 'Accessoires'),
+    ('Autre', 'Autre'),
 )
 ETAT =(
     ('Bon(en service)', 'Bon(en service)'),
@@ -69,7 +71,8 @@ class Product(models.Model):
         return f'{self.categorie}'
 
 class Order(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    product = models.CharField(max_length=255, blank=True, null=True,)
+    category = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORIE)
     staff = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     order_quantity = models.PositiveIntegerField(null=True)
     date = models.DateTimeField(auto_now_add=True )

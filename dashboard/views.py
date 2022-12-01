@@ -6,15 +6,29 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 #import paginator stuff
 from django.core.paginator import Paginator
-from .forms import ProductForm
+from .forms import ProductForm, OrderForm
 from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def index(request):
+    orders = Order.objects.all()
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.staff = request.user
+            instance.save()
+            messages.success(request, "Requête enregistrée avec succès !")
+            return redirect('dashboard-index')
+    else:
+        form = OrderForm()
+
     title = "Bienvenue sur IT'WATCH"
     context = {
-        'title': title
+        'title': title,
+        'orders': orders,
+        'form': form,
     }
     return render(request, 'dashboard/index.html', context)
 
