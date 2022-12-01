@@ -15,7 +15,8 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Nouvel utilisateur enregistré avec succès!")
+            new_user = form.cleaned_data.get('username')
+            messages.success(request, f"{new_user} enregistré avec succès!")
             return redirect('dashboard-index')
     else:
         form = CreateUserForm()

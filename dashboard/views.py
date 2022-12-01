@@ -66,10 +66,12 @@ def product(request):
 
     #----Ajout matériel----
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST or '')
         if form.is_valid():
             form.save()
-            messages.success(request, "Matériel ajouté avec succès")
+            product_name = form.cleaned_data.get('identifiant')
+            product_modele = form.cleaned_data.get('marque_modele')
+            messages.success(request, f"{product_name}-{product_modele} a été ajouté avec succès")
             return redirect('dashboard-product')  # puis on redirige vers la page de la liste
     else:
         form = ProductForm()
@@ -95,7 +97,9 @@ def update_items(request, id):
         form = ProductForm(request.POST, instance=item)
         if form.is_valid():  # verification si les infos sont valides
             form.save()  # si valide on sauvergarde le formulaire
-            messages.success(request, "Mise à jour du matériel effectué avec succès")
+            update_name = form.cleaned_data.get('identifiant')
+            update_modele = form.cleaned_data.get('marque_modele')
+            messages.success(request, f"Mise à jour de {update_name}-{update_modele} effectué avec succès")
             return redirect('dashboard-product')  # puis on redirige vers la page de la liste
     else:
         form = ProductForm(instance=item)
