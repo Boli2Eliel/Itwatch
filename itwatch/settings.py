@@ -123,7 +123,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR/ "static"
+    BASE_DIR/ "dashboard/static"
 ]
 
 STATIC_ROOT = (BASE_DIR/"asert/")
@@ -137,6 +137,14 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = 'dashboard-index' # redirect after login
 
 LOGIN_URL = 'user-login' # for decorators
+
+# Paramètres de Messagerie
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'djangoprestitwatch@gmail.com'
+EMAIL_HOST_PASSWORD = 'mcculxjibmkrdhoi'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

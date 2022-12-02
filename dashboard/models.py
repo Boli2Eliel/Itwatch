@@ -48,9 +48,18 @@ UTILISATEUR =(
     ('NGOUMA Cyrille', 'NGOUMA Cyrille'),
 )
 
+
+class Category(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, blank=True, null=True,)
+
+    class Meta:
+        verbose_name_plural = 'Category'
+    def __str__(self):
+        return f'{self.name}'
 class Product(models.Model):
     identifiant = models.CharField(max_length=255, blank=True, null=True,)
-    categorie = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORIE)
+    categorie = models.ForeignKey(Category,on_delete=models.CASCADE, null=True,)
     etat = models.CharField(max_length=255, blank=True, null=True, choices=ETAT)
     departement = models.CharField(max_length=255, blank=True, null=True, choices=DEPARTEMENT)
     affecte_a = models.CharField(max_length=255, blank=True, null=True, choices=UTILISATEUR)

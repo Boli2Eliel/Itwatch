@@ -10,9 +10,11 @@ from .forms import ProductForm, OrderForm
 from django.contrib.auth.models import User
 
 # Create your views here.
+#===================INDEX========================
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def index(request):
     orders = Order.objects.all()
+    products = Product.objects.all()
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -24,25 +26,45 @@ def index(request):
     else:
         form = OrderForm()
 
+    workers_count = User.objects.all().count()
+    products_count = Product.objects.all().count()
+    orders_count = Order.objects.all().count()
+    #product_graphs = Product.objects.order_by('categorie')
+    #categorie_count= product_graphs.count()
+
     title = "Bienvenue sur IT'WATCH"
     context = {
         'title': title,
         'orders': orders,
         'form': form,
+        'products': products,
+        'workers_count': workers_count,
+        'products_count': products_count,
+        'orders_count': orders_count,
+        #'product_graphs': product_graphs,
+        #'categorie_count': categorie_count,
     }
     return render(request, 'dashboard/index.html', context)
 
+#=======================STAFF==========================
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def staff(request):
     workers = User.objects.all()
+    workers_count = workers.count()
+    products_count = Product.objects.all().count()
+    orders_count = Order.objects.all().count()
 
     title = "Staff Page"
     context = {
         'title': title,
         'workers': workers,
+        'workers_count': workers_count,
+        'products_count': products_count,
+        'orders_count': orders_count,
     }
     return render(request, 'dashboard/staff.html', context)
 
+#======================== STAFF DETAIL =========================
 @login_required()
 def staff_detail(request, id):
     workers = User.objects.get(pk=id)
@@ -52,10 +74,12 @@ def staff_detail(request, id):
     }
     return render(request, 'dashboard/staff_detail.html', context)
 
+#======================= ADD PRODUCT =======================
 @login_required()
 def add_product(request):
     return render(request, "add_product.html")
 
+#======================= PRODUCT =========================
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def product(request):
     #p = Paginator(Product.objects.raw('SELECT * FROM dashboard_product'), 6)#Using ORM
@@ -63,6 +87,14 @@ def product(request):
     page = request.GET.get('page')
     queryset = p.get_page(page)
     nums = "a" * queryset.paginator.num_pages #POUR AFFICHER LE NOMBRE EXACT DES PAGES et afiicher le nombres exact
+
+#*********************************************
+    workers_count = User.objects.all().count()
+    products_count = Product.objects.all().count()
+    orders_count = Order.objects.all().count()
+#*********************************************
+
+    #product_graphs = Product.objects.filter('categorie')
 
     #----Ajout matériel----
     if request.method == 'POST':
@@ -77,9 +109,8 @@ def product(request):
         form = ProductForm()
     # ----End Ajout matériel----
 
-    # ----- Mise à jour matériel ----
+    # ----- Count items -------
 
-    # ------ end mise à jour -------
 
     title = "Liste du matériel"
     context = {
@@ -87,9 +118,14 @@ def product(request):
         'queryset': queryset,
         'nums': nums,
         'form' : form,
+        'workers_count': workers_count,
+        'products_count': products_count,
+        'orders_count': orders_count,
+        #'product_graphs': product_graphs,
     }
     return render(request, 'dashboard/product.html', context)
 
+#===================== UPDATE ITEMS ========================
 @login_required()
 def update_items(request, id):
     item = Product.objects.get(pk=id)
@@ -110,6 +146,7 @@ def update_items(request, id):
     }
     return render(request, "dashboard/update_items.html", context)
 
+#====================== DELETE ITEMS ========================
 @login_required()
 def delete_item(request, id):
     pi = Product.objects.get(pk=id)
@@ -118,14 +155,21 @@ def delete_item(request, id):
     return redirect('dashboard-product')
     # messages.success(request, "Item supprimé avec succès")
 
-
+#======================== ORDER ========================
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def order(request):
     orders = Order.objects.all()
+
+    workers_count = User.objects.all().count()
+    products_count = Product.objects.all().count()
+    orders_count = Order.objects.all().count()
 
     title = "Commandes"
     context = {
         'title': title,
         'orders':orders,
+        'workers_count':workers_count,
+        'products_count':products_count,
+        'orders_count':orders_count,
     }
     return render(request, 'dashboard/order.html', context)
