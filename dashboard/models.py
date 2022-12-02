@@ -15,6 +15,18 @@ CATEGORIE =(
     ('Accessoires', 'Accessoires'),
     ('Autre', 'Autre'),
 )
+CATEGORY =(
+    ('Laptop', 'Laptop'),
+    ('Desktop', 'Desktop'),
+    ('Onduleur', 'Onduleur'),
+    ('Imprimante', 'Imprimante'),
+    ('Serveur', 'Serveur'),
+    ('Ecran', 'Ecran'),
+    ('Nas', 'Nas'),
+    ('Phone', 'Phone'),
+    ('IPABX', 'IPABX'),
+    ('Autre', 'Autre'),
+)
 ETAT =(
     ('Bon(en service)', 'Bon(en service)'),
     ('Bon(pas en service)', 'Bon(pas en service)'),
@@ -58,8 +70,8 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name}'
 class Product(models.Model):
-    identifiant = models.CharField(max_length=255, blank=True, null=True,)
-    categorie = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORIE)
+    identifiant = models.CharField(max_length=255, blank=True, unique=True, null=True)
+    categorie = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORY)
     etat = models.CharField(max_length=255, blank=True, null=True, choices=ETAT)
     departement = models.CharField(max_length=255, blank=True, null=True, choices=DEPARTEMENT)
     affecte_a = models.CharField(max_length=255, blank=True, null=True, choices=UTILISATEUR)
@@ -81,7 +93,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.CharField(max_length=255, blank=True, null=True,)
-    category = models.ForeignKey(Category,on_delete=models.CASCADE, null=True,)
+    category = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORIE)
     staff = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     order_quantity = models.PositiveIntegerField(null=True)
     date = models.DateTimeField(auto_now_add=True )

@@ -9,6 +9,10 @@
     <div class="container">
         <div class="row my-5">
             <div class="col-md-6">
+                <div class="card-header text-white" style="background-color:rgb(37, 75, 140);">
+                    <h4>Tendances des commandes / catégorie </h4>
+                </div>
+                
                 <div class="bg-white">
                     <canvas id="myChart1" width="400" height="300"></canvas>
                     <script>
@@ -16,10 +20,10 @@
                         var myChart1 = new Chart(ctx, {
                             type: 'pie',
                             data: {
-                                labels: [{% for order in orders %} '{{order.product}}', {% endfor %}],
+                                labels: [{% for order in order_categorie %} '{{order}}', {% endfor %}],
                                 datasets: [{
                                     label: 'Orders',
-                                    data: [{% for order in orders %} '{{order.order_quantity}}', {% endfor %}],
+                                    data: [{% for order in order_number %} '{{order}}', {% endfor %}],
                                     backgroundColor: [
                                         'rgba(255, 99, 132, 1)',
                                         'rgba(54, 162, 235, 1)',
@@ -30,9 +34,9 @@
                                         <!-- Copy and paste colors for repeat them-->
                                         'rgba(32, 99, 132, 1)',
                                         'rgba(54, 162, 235, 1)',
-                                        'rgba(232, 206, 86, 1)',
+                                        'rgba(22, 106, 112, 1)',
                                         'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(15, 102, 74, 1)',
                                         'rgba(255, 159, 64, 1)'
                                     ],
                                     borderColor: [
@@ -66,6 +70,9 @@
                 </div>
             </div>
             <div class="col-md-6">
+                <div class="card-header text-white" style="background-color:rgb(37, 75, 140);">
+                    <h4>Tendances matériel IT / catégorie </h4>
+                </div>
                 <div class="bg-white">
                     <canvas id="myChart" width="400" height="300"></canvas>
                     <script>
@@ -75,7 +82,7 @@
                             data: {
                                 labels: [{% for categorie in categorie_list %} '{{categorie}}', {% endfor %}],
                                 datasets: [{
-                                    label: 'Products',
+                                    label: '',
                                     data: [{% for number in number_list %} '{{number}}', {% endfor %}],
                                     backgroundColor: [
                                         'rgba(255, 99, 132, 1)',

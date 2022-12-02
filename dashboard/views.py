@@ -30,10 +30,9 @@ def index(request):
     workers_count = User.objects.all().count()
     products_count = Product.objects.all().count()
     orders_count = Order.objects.all().count()
-    # ******************************************
+    # *****************For Product*********************
     ltp = Product.objects.filter(categorie='Laptop').count()
     laptop = int(ltp)
-    print(f'Nombre de laptop :', laptop)
 
     dtp = Product.objects.filter(categorie='Desktop').count()
     desktop = int(dtp)
@@ -53,23 +52,63 @@ def index(request):
     nas = Product.objects.filter(categorie='Nas').count()
     nas = int(nas)
 
-    fon= Product.objects.filter(categorie='Téléphonie').count()
-    telephonie = int(fon)
+    fon= Product.objects.filter(categorie='Phone').count()
+    phone = int(fon)
 
-    acc = Product.objects.filter(categorie='Accessoires').count()
-    accessoires = int(acc)
+    pabx = Product.objects.filter(categorie='IPABX').count()
+    ipabx = int(pabx)
 
     otr = Product.objects.filter(categorie='Autre').count()
     autre= int(otr)
             #**********
     categorie_list = [
     'Laptop', 'Desktop', 'Onduleur','Imprimante', 'Serveur','Ecran',
-    'Nas', 'Téléphonie', 'Accessoires', 'Autre'
+    'Nas', 'Phone', 'IPABX', 'Autre'
     ]
     number_list = [
         laptop, desktop, onduleur, imprimante, serveur, ecran, nas,
-        telephonie, accessoires, autre
+        phone, ipabx, autre
     ]
+    #*****************For order **********************
+    lp = Order.objects.filter(category='Laptop').count()
+    lap = int(lp)
+
+    dp = Order.objects.filter(category='Desktop').count()
+    desk = int(dp)
+
+    ond = Order.objects.filter(category='Onduleur').count()
+    ond = int(ond)
+
+    prt = Order.objects.filter(category='Imprimante').count()
+    prt = int(prt)
+
+    sv = Order.objects.filter(category='Serveur').count()
+    sv= int(sv)
+
+    ec = Order.objects.filter(category='Ecran').count()
+    ec = int(ec)
+
+    nasd = Order.objects.filter(category='Nas').count()
+    nasd = int(nasd)
+
+    fone= Order.objects.filter(category='Téléphonie').count()
+    fone = int(fone)
+
+    accs = Order.objects.filter(category='Accessoires').count()
+    accs = int(accs)
+
+    otre = Order.objects.filter(category='Autre').count()
+    otre= int(otre)
+            #**********
+    order_categorie = [
+    'Laptop', 'Desktop', 'Onduleur','Imprimante', 'Serveur','Ecran',
+    'Nas', 'Phone', 'Accesoires', 'Autre'
+    ]
+    order_number = [
+        lap, desk, ond, prt, sv, ec, nasd,
+        fone, accs, otre
+    ]
+    
 
     #******************************************
     title = "Bienvenue sur IT'WATCH"
@@ -84,6 +123,8 @@ def index(request):
         'orders_count': orders_count,
         'categorie_list': categorie_list,
         'number_list': number_list,
+        'order_categorie': order_categorie,
+        'order_number': order_number,
     }
     return render(request, 'dashboard/index.html', context)
 
