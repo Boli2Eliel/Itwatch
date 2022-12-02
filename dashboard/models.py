@@ -59,7 +59,7 @@ class Category(models.Model):
         return f'{self.name}'
 class Product(models.Model):
     identifiant = models.CharField(max_length=255, blank=True, null=True,)
-    categorie = models.ForeignKey(Category,on_delete=models.CASCADE, null=True,)
+    categorie = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORIE)
     etat = models.CharField(max_length=255, blank=True, null=True, choices=ETAT)
     departement = models.CharField(max_length=255, blank=True, null=True, choices=DEPARTEMENT)
     affecte_a = models.CharField(max_length=255, blank=True, null=True, choices=UTILISATEUR)
@@ -81,7 +81,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.CharField(max_length=255, blank=True, null=True,)
-    category = models.CharField(max_length=255, blank=True, null=True, choices=CATEGORIE)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, null=True,)
     staff = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     order_quantity = models.PositiveIntegerField(null=True)
     date = models.DateTimeField(auto_now_add=True )

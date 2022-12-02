@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def index(request):
     orders = Order.objects.all()
+    orders1 = Order.objects.values('product')
     products = Product.objects.all()
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -29,20 +30,60 @@ def index(request):
     workers_count = User.objects.all().count()
     products_count = Product.objects.all().count()
     orders_count = Order.objects.all().count()
-    #product_graphs = Product.objects.order_by('categorie')
-    #categorie_count= product_graphs.count()
+    # ******************************************
+    ltp = Product.objects.filter(categorie='Laptop').count()
+    laptop = int(ltp)
+    print(f'Nombre de laptop :', laptop)
 
+    dtp = Product.objects.filter(categorie='Desktop').count()
+    desktop = int(dtp)
+
+    onl = Product.objects.filter(categorie='Onduleur').count()
+    onduleur = int(onl)
+
+    imp = Product.objects.filter(categorie='Imprimante').count()
+    imprimante = int(imp)
+
+    svr = Product.objects.filter(categorie='Serveur').count()
+    serveur = int(svr)
+
+    ecr = Product.objects.filter(categorie='Ecran').count()
+    ecran = int(ecr)
+
+    nas = Product.objects.filter(categorie='Nas').count()
+    nas = int(nas)
+
+    fon= Product.objects.filter(categorie='Téléphonie').count()
+    telephonie = int(fon)
+
+    acc = Product.objects.filter(categorie='Accessoires').count()
+    accessoires = int(acc)
+
+    otr = Product.objects.filter(categorie='Autre').count()
+    autre= int(otr)
+            #**********
+    categorie_list = [
+    'Laptop', 'Desktop', 'Onduleur','Imprimante', 'Serveur','Ecran',
+    'Nas', 'Téléphonie', 'Accessoires', 'Autre'
+    ]
+    number_list = [
+        laptop, desktop, onduleur, imprimante, serveur, ecran, nas,
+        telephonie, accessoires, autre
+    ]
+
+    #******************************************
     title = "Bienvenue sur IT'WATCH"
     context = {
         'title': title,
         'orders': orders,
+        'orders1': orders1,
         'form': form,
         'products': products,
         'workers_count': workers_count,
         'products_count': products_count,
         'orders_count': orders_count,
-        #'product_graphs': product_graphs,
-        #'categorie_count': categorie_count,
+        'categorie_list': categorie_list,
+        'number_list': number_list,
     }
     return render(request, 'dashboard/index.html', context)
 
