@@ -165,7 +165,8 @@ def add_product(request):
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def product(request):
     #p = Paginator(Product.objects.raw('SELECT * FROM dashboard_product'), 6)#Using ORM
-    p = Paginator(Product.objects.all(), 6) #Pagination par 9, c-à-d chaque page affichera 9 élements #Usisng SQL
+    pi = Product.objects.all().order_by('-updated_at')
+    p = Paginator(pi, 6) #Pagination par 9, c-à-d chaque page affichera 9 élements #Usisng SQL
     page = request.GET.get('page')
     queryset = p.get_page(page)
     nums = "a" * queryset.paginator.num_pages #POUR AFFICHER LE NOMBRE EXACT DES PAGES et afiicher le nombres exact
@@ -240,7 +241,7 @@ def delete_item(request, id):
 #======================== ORDER ========================
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def order(request):
-    orders = Order.objects.all()
+    orders = Order.objects.all().order_by('-date')
 
     workers_count = User.objects.all().count()
     products_count = Product.objects.all().count()

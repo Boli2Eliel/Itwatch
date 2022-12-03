@@ -46,7 +46,6 @@
                     <th>Affecté à</th>
                     <th>Service</th>
                     <th>Date d'ajout</th>
-                    <th>Modifié le</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -62,7 +61,6 @@
                     <td>{{instance.affecte_a}}</td>
                     <td>{{instance.departement}}</td>
                     <td>{{instance.created_at}}</td>
-                    <td>{{instance.updated_at}}</td>
                     <td>
                         <a class="btn btn-info btn-sm"
                             href="{% url 'dashboard-updatedata' instance.id %}"> <i class="fas fa-pencil-alt" data-toggle="modal" data-target=""></i></a>
