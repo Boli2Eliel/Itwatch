@@ -9,5 +9,9 @@ urlpatterns = [
     path('update_items/<int:id>/', views.update_items, name='dashboard-updatedata'),
     path('delete_item/<int:id>', views.delete_item, name='deleteitem'),
     path('order/', views.order, name='dashboard-order'),
+    path('product_text/', views.product_text, name='product_text'),
+    path('product_csv/', views.product_csv, name='dashboard-product_csv'),
+    path('export_excel/', views.export_excel, name='dashboard-export_excel'),
+    path('export_pdf/', views.export_pdf, name='dashboard-export_pdf'),
 
 ]

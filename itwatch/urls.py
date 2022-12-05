@@ -20,7 +20,6 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     #path('', user_view.first_page, name='user-first_page'),
     #path('accounts/login/', user_view.connexion, name='user-login'),

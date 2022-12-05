@@ -1,13 +1,114 @@
+import datetime
+import xlwt
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+
+from .forms import OrderForm, ProductForm
 from .models import *
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 #import paginator stuff
-from django.core.paginator import Paginator
-from .forms import ProductForm, OrderForm
-from django.contrib.auth.models import User
+import csv
+#For PDF
+import io
+
+#Generate PDF File Product list
+
+def export_pdf(request):
+     pass
+#Generate text file product list
+def product_text(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=parcItwatch.txt'
+    #designate the model
+    products = Product.objects.all()
+
+    lines = []
+    #Loop Thu and output
+    for product in products:
+        lines.append(f"{product.id},{product.identifiant},{product.marque_modele},{product.categorie},{product.noSerie},{product.etat}, {product.affecte_a}, {product.departement},{product.date_affectation}, {product.observation}\n")
+
+    #Write to Textfile
+    response.writelines(lines)
+    return response
+
+#Generate csv file product list
+def product_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=parcItwatch.csv'
+
+    # Create a csv writer
+    writer = csv.writer(response)
+
+    #designate the model
+    products = Product.objects.all()
+
+    #Add columns to csv file
+    writer.writerow(['Id', 'Identifiant', 'Marque & Modèle', 'Catégorie', 'NoSérie', 'Etat du matériel', 'Affecté à', 'Departement',"Date d'affectation", "Date d'achat", 'Observations',])
+
+
+    #Loop Thu and output
+    for product in products:
+        writer.writerow([product.id, product.identifiant, product.marque_modele, product.categorie, product.noSerie, product.etat, product.affecte_a, product.departement, product.date_affectation, product.date_achat, product.observation])
+
+    return response
+
+def export_excel(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=ItWatch'+\
+        str(datetime.datetime.now())+ '.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Itwatch')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['ID', 'IDENTIFIANT', 'MARQUE & MODELE', 'CATEGORIE', 'No SERIE', 'ETAT DU MATERIEL', 'AFFECTE A', 'DEPARTEMENT',"DATE D'AFFECTATION", "DATE D'ACHAT", 'OBSERVATIONS',]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    font_style = xlwt.XFStyle()
+    font_style.font.italic =True
+
+    rows = Product.objects.values_list('id', 'identifiant', 'marque_modele', 'categorie', 'noSerie', 'etat', 'affecte_a', 'departement',"date_affectation", "date_achat", 'observation',)
+
+    for row in rows:
+        row_num += 1
+
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, str(row[col_num]), font_style)
+    wb.save(response)
+    return response
+
+
+"""def product_xlsx(request):
+    # designate the model
+    products = Product.objects.all()
+    data = []
+    # Loop Thu and output
+    for product in products:
+        data.append({
+           "ID": product.id,
+            "Identifiant":product.identifiant,
+            "Marque & modèle":product.marque_modele,
+            "Categorie":product.categorie,
+            "NoSerie":product.noSerie,
+            "Etat":product.etat,
+            "Affecté à":product.affecte_a,
+            "Departement":product.departement,
+            "Date d'affectation":product.date_affectation,
+            "Date d'achat":product.date_achat,
+            "Observations":product.observation
+        })
+
+    pd.DataFrame(data).to_excel('output.xlsx')
+    return JsonResponse({
+        'status':200
+    })"""
+
 
 # Create your views here.
 #===================INDEX========================

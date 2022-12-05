@@ -38,12 +38,21 @@
   </head>
   <body id='backgd'>
     
+    
     {% include 'partials/nav.html' %} <!-- Ce tag nous permet d'inclure les pages componennt qui sont ds le dossier 'partials'-->
 
   
 
     {% block content%} {% endblock content%}<!-- Ce tag permet d'inclure les autres pages qui sont ds le dossier 'dashboard'-->
-
+    <footer>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="copyright offset-4">
+                  <p class="text-gray text-bold">Copyright © 2022 IT'WATCH. All rights reserved. Template by <a href="https://prestit.com">PREST'IT</a></p>
+              </div>
+          </div>
+      </div>
+      </footer>
       <!--SweetAlert-->
       <!--script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></!--script-->
       <script src="{% static '/js/sweetalert.min.js' %}"></script>
@@ -62,6 +71,7 @@
              {% endfor %}
          {% endif %}
       </script>
+
 
     <!-- Optional JavaScript; choose one of the two! -->
 
