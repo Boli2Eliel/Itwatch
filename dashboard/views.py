@@ -1,23 +1,115 @@
 import datetime
-import xlwt
-from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
 
+#import paginator stuff
+from django.core.paginator import Paginator
+
+from django.shortcuts import render, redirect
 from .forms import OrderForm, ProductForm
 from .models import *
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-#import paginator stuff
+
+#Import XlS
+import xlwt
+
 import csv
-#For PDF
+
+#====Import PDF====
 import io
+# ---xhtml2pdf---
+from django.http import FileResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+# For Report Lab
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import landscape
+from reportlab.platypus import Image
+# End for report lab
+
+#Resgistration
+from django.contrib.auth.models import auth, User
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.conf import settings
+
+
 
 #Generate PDF File Product list
 
+def show_pdf(request):
+    """#create Bytestream buffer
+    buf = io.BytesIO()
+    # create a canvas
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    # create a text object
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Helvetica", 14)
+    # Add some lines of text
+    #lines =[
+        #"mlkjhjhkclslkcjkllc",
+        #"mlkjhjhkclslkcjkllc",
+        #"mlkjhjhkclslkcjkllc",
+    #]
+    products = Product.objects.all()
+    #Create blank list
+    lines =[]
+
+    for product in products:
+        lines.append(product.identifiant)
+        lines.append(product.categorie)
+        lines.append(product.etat)
+        lines.append(" ")
+    #loop
+    for line in lines:
+        textob.textLine(line)
+    #finish up
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+
+    #Return something
+    return FileResponse(buf, as_attachment=True, filename="Itwatch.pdf")"""
+
+    products = Product.objects.all()
+    date_time = str(datetime.datetime.now())
+    context = {
+        'products': products,
+        'date_time': date_time,
+    }
+    return render(request, 'pdfs/show_pdf.html', context)
+
 def export_pdf(request):
-     pass
+    products = Product.objects.all()
+
+    template_path = 'pdfs/show_pdf.html'
+    context = {}
+
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=ItWatch'+\
+        str(datetime.datetime.now())+ '.pdf'
+
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+        html, dest=response,)
+    # if error then show some funny view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+
 #Generate text file product list
 def product_text(request):
     response = HttpResponse(content_type='text/plain')
@@ -111,6 +203,46 @@ def export_excel(request):
 
 
 # Create your views here.
+def register(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        username = request.POST['username']
+        password = request.POST['password']
+
+        if User.objects.filter(username=username).exists():
+            messages.info(request, 'Oups ,Cet utilisateur existe déjà !')
+            return redirect("user-register")
+        #elif User.objects.filter(email=email).exists():
+            #messages.info(request, 'Come On, Email was already Taken !')
+            #return redirect("user-register")
+        else:
+            user = User.objects.create_user(
+                username=username, password=password, email=email,)
+            mydict = {'username': username,
+                      'password': password,
+                      'email': email,
+                      }
+            user.save()
+            html_template = 'register_email/register_email.html'
+            html_message = render_to_string(html_template, context=mydict)
+            subject = "Bienvenue à IT'Watch-Suite"
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            message = EmailMessage(subject, html_message,
+                                   email_from, recipient_list)
+            message.content_subtype = 'html'
+            message.send()
+            messages.success(request, 'Utilisateur enregistré avec success !')
+            return redirect("user-register")
+    else:
+        return render(request, 'user/register.html')
+
+def success(request, username=None):
+    user = User.objects.create_user(username=username)
+    mydict = {'username': username}
+    return render(request, "user/success.html", mydict)
+
+
 #===================INDEX========================
 @login_required()  # on met ce "decorators" pârtout où l'on veut que le user soit connecté avant d'y acceder
 def index(request):

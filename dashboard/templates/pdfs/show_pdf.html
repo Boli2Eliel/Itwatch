@@ -1,0 +1,91 @@
+<!DOCTYPE >
+{% load static %}
+<html>
+    <head>
+        <title>ItWatch_ParcItAMC</title>
+        <style type="text/css">
+            body {
+                font-weight: 110;
+                font-size: 14px;
+                font-family: 'Arial';
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 50;
+                text-align: left;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 50;
+               /* text-align: right;*/
+                
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 0;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <img src="{% static 'img/Logo_AMC.png' %}" alt="AMC Asssurances" style="width: 180px; margin-bottom:8px; margin-right:18px;" />
+                <p class='title'>Liste  Matériel / PARC IT - AMC ASSURANCES ~~ {{date_time}}</p>
+            </div>
+        <div>
+        <div class='details'>
+            <!--End Modal-->
+        <table class="table" >
+            <thead  style="background-color: rgb(37, 75, 140);font-size:14px ; color: white;">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Identifiant</th>
+                    <th scope="col">Marque & Modèle</th>
+                    <th scope="col">Categorie</th>
+                    <th scope="col">N°Serie</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Affecté à</th>
+                    <th scope="col">Service</th>
+                    <th scope="col">Date d'achat</th>
+                    <th scope="col">Prix d'achat</th>
+                    <th scope="col">Ajouté le </th>
+                    <th scope="col">Observations</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:13px ;">
+                {% for product in products %}
+                <tr>
+                    <td>{{product.id}}</td>
+                    <td>{{product.identifiant}}</td>
+                    <td>{{product.marque_modele}}</td>
+                    <td>{{product.categorie}}</td>
+                    <td>{{product.noSerie}}</td>
+                    <td>{{product.etat}}</td>
+                    <td>{{product.affecte_a}}</td>
+                    <td>{{product.departement}}</td>
+                    <td>{{product.date_achat}}</td>
+                    <td>{{product.prix_achat}}</td>
+                    <td>{{product.created_at}}</td>
+                    <td>{{product.observation}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            <hr class='' />
+        </div>
+    </div>
+    </body>
+</html>
+

@@ -1,16 +1,45 @@
-{% extends 'partials/base.html' %}
+
+{% extends 'user/success.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mb-5" >
         <div class="row mt-5 ">
-            <div class="col-md-6 offset-md-3 ">
-                <div class="border p-3 bg-white">
-                    <h3>Page d'enregistrement</h3>
-                    <form action="" method="POST"> {% csrf_token %}
+            <div class="col-md-4 offset-sm-4 ">
+                <div class="border bg-white" >
+                    <div style="background-color: rgb(37, 75, 140);font-size:12px ;"class="p-3 text-white">
+                        <h4><i class="fas fa-user-plus"></i> Nouvel Utilisateur</h4>
+                    </div>
+                   
+                    <!--form action="" method="POST"> {% csrf_token %}
                         {{ form | crispy}}
                         <input class="form-control btn-outline-success" type="submit" value="Enregistrer">
-                    </form>
+                    </!--form-->
+                    <div class="p-3">
+                        <form action="{% url 'user-register'  %}" method="POST">
+                            {% csrf_token %}
+                            <label for="">Email:</label>
+                            <br>
+                            <input class="form-control" type="email" name="email">
+                            <br>
+                            <label for="">Pseudo:</label>
+                            <br>
+                            <input class="form-control" type="text" name="username">
+                            <br>
+                            <label for="">Mot de passe:</label>
+                            <br>
+                            <input class="form-control" type="password" name="password">
+                            <br>
+                            <br>
+                            <input class="form-control btn-outline-success" type="submit" value="Enregistrer">
+                        </form>
+                    </div>
+                    <div class="">
+                        {% for message in messages %}
+                        <span> {{message}}</span>
+                        {% endfor %}
+                    </div>
+
                 </div>
             </div>
         </div>
